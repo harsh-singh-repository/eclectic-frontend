@@ -4,30 +4,30 @@ import { Play } from "lucide-react";
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-[#f5f5f7] flex items-center">
+    <div className="min-h-screen bg-[#fafafa] flex items-center">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
         
         {/* LEFT CONTENT */}
         <div>
           <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-red-100 text-red-500 text-sm mb-6">
             <span className="w-2 h-2 bg-red-500 rounded-full" />
-            India’s #1 Learning Platform for Class 6–12
+            India&apos;s #1 Learning Platform for Class 6-12
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-[#1d1d2e]">
+          <h1 className="text-5xl md:text-6xl font-bold leading-tight text-[#091747]">
             Master <br />
             Every <br />
             Subject with{" "}
             <span className="text-red-500">Expert Guidance</span>
           </h1>
 
-          <p className="mt-6 text-gray-600 max-w-md">
+          <p className="mt-6 text-[#333333] max-w-md">
             Comprehensive courses for CBSE, ICSE & Olympiads. Live classes,
             video lectures, study materials and mock tests — all in one place.
           </p>
 
           <div className="mt-6 flex items-center gap-4">
-            <button className="bg-black text-white px-6 py-3 rounded-xl">
+            <button className="bg-yellow-400 text-black px-6 py-3 rounded-xl font-medium">
               Explore Courses
             </button>
 
@@ -50,7 +50,7 @@ export default function Landing() {
 
             {/* Content */}
             <div className="mt-4">
-              <h3 className="font-semibold text-lg">
+              <h3 className="font-semibold text-lg text-black">
                 Class 10 — Mathematics Complete
               </h3>
 
