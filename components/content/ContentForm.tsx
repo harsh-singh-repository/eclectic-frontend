@@ -197,8 +197,12 @@ export function ContentForm({
                   <Input
                     type="number"
                     min={0}
-                    value={field.value  ?? ""}
-                    onChange={(e) => field.onChange(e.target.value)}
+                    value={field.value ?? ""}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value === "" ? undefined : Number(e.target.value)
+                      )
+                    }
                     onBlur={field.onBlur}
                     name={field.name}
                     ref={field.ref}
@@ -251,8 +255,12 @@ export function ContentForm({
                         <Input
                           type="number"
                           min={0}
-                          value={field.value  ?? ""}
-                          onChange={(e) => field.onChange(e.target.value)}
+                          value={field.value ?? ""}
+                          onChange={(e) =>
+                            field.onChange(
+                              e.target.value === "" ? undefined : Number(e.target.value)
+                            )
+                          }
                           onBlur={field.onBlur}
                           name={field.name}
                           ref={field.ref}
