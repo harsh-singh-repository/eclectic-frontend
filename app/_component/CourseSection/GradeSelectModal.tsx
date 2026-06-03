@@ -37,15 +37,13 @@ export default function GradeSelectModal({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 transition-all duration-300 ${
-        visible ? "bg-black/60 backdrop-blur-sm" : "bg-transparent"
-      }`}
+      className={`fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 transition-all duration-300 ${visible ? "bg-black/60 backdrop-blur-sm" : "bg-transparent"
+        }`}
       onClick={onClose}
     >
       <div
-        className={`w-full max-w-sm bg-[#161620] rounded-3xl border border-white/10 shadow-2xl transition-all duration-300 ${
-          visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
-        }`}
+        className={`w-full max-w-sm bg-[#161620] rounded-3xl border border-white/10 shadow-2xl transition-all duration-300 ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
+          }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Handle */}
@@ -70,7 +68,7 @@ export default function GradeSelectModal({
 
           {/* Grade Pills */}
           <div className="flex gap-3 mb-8">
-            {grades.map((g) => {
+            {grades?.map((g) => {
               const isSelected = selectedGrade?._id === g._id;
               return (
                 <button
@@ -89,7 +87,7 @@ export default function GradeSelectModal({
                     transform: isSelected ? "scale(1.05)" : "scale(1)",
                   }}
                 >
-                  {g.name?.replace("Class ", "")}
+                  {g.name?.replace(/\D/g, "") || g.name}
                 </button>
               );
             })}

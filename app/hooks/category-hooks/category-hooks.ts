@@ -5,10 +5,10 @@ import { CATEGORY_SERVICES } from "@/app/services/category-services/CategoryServ
 import { CategoryCreate, CategoryUpdate } from "@/app/types/category";
 
 // ✅ GET CATEGORIES
-export const useGetCategories = (type?: string) => {
+export const useGetCategories = (type?: string , slug?: string) => {
   return useQuery({
     queryKey: ["categories"],
-    queryFn: () => CATEGORY_SERVICES.getCategories(type),
+    queryFn: () => CATEGORY_SERVICES.getCategories(type , slug),
   });
 };
 
@@ -66,3 +66,11 @@ export const useDeleteCategory = () => {
     },
   });
 };  
+
+// ✅ GET CHILD CATEGORIES
+export const useGetChildCategoriesByParentSlug = (parentSlug: string) => {
+  return useQuery({
+    queryKey: ["childCategories", parentSlug],
+    queryFn: () => CATEGORY_SERVICES.getChildCategories(parentSlug),
+  });
+};

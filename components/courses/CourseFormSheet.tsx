@@ -78,10 +78,12 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
   };
 
   const getCategoryName = (id: string) =>
-    categories?.find((c:{
-      id: string;
-      name: string;
-    }) => c.id === id)?.name ?? id;
+    categories?.find(
+      (c: {
+        _id: string;
+        name: string;
+      }) => c._id === id
+    )?.name ?? "Unknown Category";
 
   console.log({
     "selectedCategoryIds": selectedCategoryIds,
@@ -289,7 +291,7 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
                     </p>
                   ) : (
                     <div className="space-y-1">
-                      {categories.map((cat:{
+                      {categories.map((cat: {
                         _id: string;
                         name: string;
                         type: string;

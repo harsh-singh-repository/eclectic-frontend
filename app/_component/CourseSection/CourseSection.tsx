@@ -5,7 +5,7 @@ import GradeSelectModal from "./GradeSelectModal";
 import SubjectSelectModal from "./SubjectSelectModal";
 import CourseCard, { CourseType } from "./CourseCard";
 import { Users, Video, TrendingUp } from "lucide-react";
-import { useGetCategories } from "@/app/hooks/category-hooks/category-hooks";
+import { useGetCategories, useGetChildCategoriesByParentSlug } from "@/app/hooks/category-hooks/category-hooks";
 import { useGetSubjects } from "@/app/hooks/subject-hooks/SubjectHooks";
 import { useRouter } from "next/navigation";
 
@@ -15,6 +15,7 @@ const COURSES = [
     {
         type: "junior" as CourseType,
         title: "Junior Foundation",
+        slug: "juniour-foundation",
         subtitle: "Build Strong Roots",
         grades: "Grade 6 – 8",
         bgGradient: "#FEFEFE",
@@ -39,6 +40,7 @@ const COURSES = [
     {
         type: "board" as CourseType,
         title: "Ace the Board",
+        slug: "ace-the-boards",
         subtitle: "Score What Matters",
         grades: "Grade 9 – 12",
         accentColor: "#4277F5",           // indigo
@@ -63,6 +65,7 @@ const COURSES = [
     {
         type: "goal" as CourseType,
         title: "Hit the Goal",
+        slug: "hit-the-goal",
         subtitle: "Olympiad · IIT · NEET",
         grades: "Competitive",
         tags: ["Olympiad", "IIT-JEE", "NEET"],
@@ -101,7 +104,8 @@ export default function CoursesSection() {
     const [selectedGrade, setSelectedGrade] = useState<{ _id: number, name: string } | null>(null);
     const [selectedSubject, setSelectedSubject] = useState<{ _id: number, name: string } | null>(null);
 
-    const { data: categories } = useGetCategories("CLASS");
+    const { data: categories } =
+        useGetChildCategoriesByParentSlug(activeCourse?.slug || "");
     const { data: subjects } = useGetSubjects();
 
     const openCourse = (course: (typeof COURSES)[0]) => {

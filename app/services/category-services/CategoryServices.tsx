@@ -3,7 +3,8 @@ import { CategoryCreate, CategoryUpdate } from "@/app/types/category";
 import axiosInstance from "@/lib/axiosInstance";
 
 const CATEGORY_APIS = {
-  GET_CATEGORIES:(type?: string) => `/categories${type ? `?type=${type}` : ""}`,
+  GET_CATEGORIES:(type?: string , slug?: string) => `/categories?${type ? `?type=${type}` : ""}${slug ? `slug=${slug}` : ""}`,
+  GET_CHILD_CATEGORIES: (parentSlug: string) => `/categories/${parentSlug}/children`,
   CREATE_CATEGORY: "/categories",
   UPDATE_CATEGORY: (id: string) => `/categories/${id}`,
   DELETE_CATEGORY: (id: string) => `/categories/${id}`,
@@ -11,8 +12,16 @@ const CATEGORY_APIS = {
 
 export const CATEGORY_SERVICES = {
   // ✅ GET CATEGORIES
-  getCategories: async (type?: string) => {
-    const response = await axiosInstance.get(CATEGORY_APIS.GET_CATEGORIES(type));
+  getCategories: async (type?: string , slug?: string) => {
+    const response = await axiosInstance.get(CATEGORY_APIS.GET_CATEGORIES(type , slug));
+    return response.data.data;
+  },
+
+  // ✅ GET CHILD CATEGORIES
+  getChildCategories: async (parentSlug: string) => {
+    const response = await axiosInstance.get(
+      CATEGORY_APIS.GET_CHILD_CATEGORIES(parentSlug)
+    );
     return response.data.data;
   },
 
