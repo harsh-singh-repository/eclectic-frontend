@@ -35,13 +35,6 @@ export default function Navbar() {
     const isAuth = status === "authenticated";
     const navLinks = isAuth ? authLinks : guestLinks;
 
-    const initials = session?.user?.name
-        ?.split(" ")
-        .map((n) => n[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase() ?? "?";
-
     return (
         <>
             {/* ── Desktop & Tablet Navbar ── */}
