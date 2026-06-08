@@ -167,3 +167,29 @@ export function useGetContentByFilter(params: {
     gcTime: 1000 * 60 * 10,
   });
 }
+
+export function useContentByCategory(categoryId: string) {
+  return useQuery({
+    queryKey: ["contentByCategory", categoryId],
+    queryFn: async () => {
+      const { data } = await axios.get<ContentFilterResponse>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/content/category/${categoryId}`,
+      );
+      return data;
+    },
+    enabled: !!categoryId,
+  });
+}
+
+export function useContentBySubject(subjectId: string) {
+  return useQuery({
+    queryKey: ["contentBySubject", subjectId],
+    queryFn: async () => {
+      const { data } = await axios.get<ContentFilterResponse>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/content/subject/${subjectId}`,
+      );
+      return data;
+    },
+    enabled: !!subjectId,
+  });
+}

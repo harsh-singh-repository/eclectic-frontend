@@ -75,3 +75,12 @@ export const useDeleteCourse = () => {
     },
   });
 };
+
+// ✅ GET COURSE BY CATEGORY ID
+export const useGetCourseByCategoryId = (categoryId: string, subjectId?: string) => {
+  return useQuery({
+    queryKey: ["course", categoryId, subjectId],
+    queryFn: () => COURSE_SERVICES.getCourseByCategoryId(categoryId, subjectId),
+    enabled: !!categoryId || !!subjectId,
+  });
+};

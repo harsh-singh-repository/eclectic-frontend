@@ -4,6 +4,7 @@ import axiosInstance from "@/lib/axiosInstance";
 const COURSE_APIS = {
   GET_COURSES: "/course",
   CREATE_COURSE: "/course",
+  GET_COURSE_BY_CATEGORY:(categoryId: string , subjectId?: string) => `/course/category?categoryId=${categoryId}${subjectId ? `&subjectId=${subjectId}` : ""}`,
   UPDATE_COURSE: (id: string) => `/course/${id}`,
   DELETE_COURSE: (id: string) => `/course/${id}`,
   GET_COURSE_BY_ID: (id: string) => `/course/${id}`,
@@ -106,6 +107,12 @@ export const COURSE_SERVICES = {
   // ✅ GET COURSE BY ID
   getCourseById: async (id: string) => {
     const response = await axiosInstance.get(COURSE_APIS.GET_COURSE_BY_ID(id));
+    return response.data;
+  },
+  getCourseByCategoryId: async (categoryId: string, subjectId?: string) => {
+    const response = await axiosInstance.get(
+      COURSE_APIS.GET_COURSE_BY_CATEGORY(categoryId, subjectId)
+    );
     return response.data;
   },
 };

@@ -159,61 +159,50 @@ export default function CoursesSection() {
             </div>
 
             {/* ── Stats Strip ── */}
-            <div className="max-w-5xl mx-auto mt-14">
-                <div className="bg-slate-100 border border-gray-200 rounded-2xl px-6 py-5 flex items-center justify-between">
+            <div className="max-w-5xl mx-auto mt-14 px-4">
+                <div className="bg-slate-100 border border-gray-200 rounded-2xl px-2 py-5
+    flex flex-col sm:flex-row items-stretch">
 
                     {stats.map((s, i) => (
                         <div
                             key={s.label}
                             className={`
-      flex items-center gap-4 flex-1 px-6
-      ${i !== stats.length - 1 ? "border-r border-gray-200" : ""}
-    `}
+          flex items-center gap-4 flex-1 px-6 py-3 sm:py-0
+          ${i !== stats.length - 1
+                                    ? "border-b border-gray-200 sm:border-b-0 sm:border-r"
+                                    : ""}
+        `}
                         >
-                            {/* Icon */}
                             <div
                                 className={`
-        w-12 h-12 rounded-full flex items-center justify-center
-        ${s.color === "teal"
-                                        ? "bg-teal-100/70"
-                                        : s.color === "blue"
-                                            ? "bg-blue-100/70"
-                                            : "bg-orange-100/70"
-                                    }
-      `}
+            w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0
+            ${s.color === "teal" ? "bg-teal-100/70"
+                                        : s.color === "blue" ? "bg-blue-100/70"
+                                            : "bg-orange-100/70"}
+          `}
                             >
                                 <s.icon
                                     className={`
-          w-5 h-5
-          ${s.color === "teal"
-                                            ? "text-teal-600"
-                                            : s.color === "blue"
-                                                ? "text-blue-600"
-                                                : "text-orange-600"
-                                        }
-        `}
+              w-5 h-5
+              ${s.color === "teal" ? "text-teal-600"
+                                            : s.color === "blue" ? "text-blue-600"
+                                                : "text-orange-600"}
+            `}
                                 />
                             </div>
 
-                            {/* Text */}
                             <div className="leading-tight">
                                 <p
                                     className={`
-          text-[26px] font-semibold
-          ${s.color === "teal"
-                                            ? "text-teal-600"
-                                            : s.color === "blue"
-                                                ? "text-blue-600"
-                                                : "text-orange-600"
-                                        }
-        `}
+              text-[26px] font-semibold
+              ${s.color === "teal" ? "text-teal-600"
+                                            : s.color === "blue" ? "text-blue-600"
+                                                : "text-orange-600"}
+            `}
                                 >
                                     {s.value}
                                 </p>
-
-                                <p className="text-[13px] text-gray-500 mt-[2px]">
-                                    {s.label}
-                                </p>
+                                <p className="text-[13px] text-gray-500 mt-[2px]">{s.label}</p>
                             </div>
                         </div>
                     ))}

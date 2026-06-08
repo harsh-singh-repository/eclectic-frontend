@@ -6,6 +6,8 @@ const CONTENT_APIS = {
   CREATE_CONTENT: "/content",
   UPDATE_CONTENT: (id: string) => `/content/${id}`,
   DELETE_CONTENT: (id: string) => `/content/${id}`,
+  GET_CONTENT_BY_CATEGORY: (categoryId: string) => `/content/category/${categoryId}`,
+  GET_CONTENT_BY_SUBJECT: (subjectId: string) => `/content/subject/${subjectId}`,
 };
 
 export const CONTENT_SERVICES = {
@@ -99,5 +101,21 @@ export const CONTENT_SERVICES = {
       params: data,
     });
     return response.data;
+  },
+
+  // ✅ GET CONTENT BY CATEGORY
+  getContentByCategory: async (categoryId: string) => {
+    const response = await axiosInstance.get(
+      CONTENT_APIS.GET_CONTENT_BY_CATEGORY(categoryId)
+    );
+    return response.data.data;
+  },
+
+  // ✅ GET CONTENT BY SUBJECT
+  getContentBySubject: async (subjectId: string) => {
+    const response = await axiosInstance.get(
+      CONTENT_APIS.GET_CONTENT_BY_SUBJECT(subjectId)
+    );
+    return response.data.data;
   },
 };

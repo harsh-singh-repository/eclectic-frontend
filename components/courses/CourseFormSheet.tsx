@@ -85,10 +85,7 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
       }) => c._id === id
     )?.name ?? "Unknown Category";
 
-  console.log({
-    "selectedCategoryIds": selectedCategoryIds,
-    "categories": categories,
-  });
+
   // ─────────────────────────────────────────────────────────────────────────
 
   const form = useForm<FormValues>({
@@ -131,6 +128,8 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
     setThumbnailFile(file);
     setPreview(URL.createObjectURL(file));
   };
+
+  console.log("Errors", form.formState.errors);
 
   const onSubmit = (values: FormValues) => {
     const payload: CourseCreate = {
@@ -370,7 +369,19 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
                   <FormItem>
                     <FormLabel className="text-xs font-medium text-zinc-600">Price (₹)</FormLabel>
                     <FormControl>
-                      <Input type="number" min={0} placeholder="0" {...field} className="text-sm" />
+                      <Input
+                        type="number"
+                        min={0}
+                        placeholder="0"
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value === ""
+                              ? undefined
+                              : Number(e.target.value)
+                          )
+                        }
+                      />
                     </FormControl>
                     <FormMessage className="text-xs" />
                   </FormItem>
