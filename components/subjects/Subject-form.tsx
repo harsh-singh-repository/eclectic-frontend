@@ -22,7 +22,7 @@ import { useCreateSubject, useUpdateSubject } from "@/app/hooks/subject-hooks/Su
 
 const subjectSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  icon: z.file().min(1, "Icon is required"),
+  icon: z.string().min(1, "Icon is required"),
   color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Must be a valid hex color"),
   slug: z
     .string()

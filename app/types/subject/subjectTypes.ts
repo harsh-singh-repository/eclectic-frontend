@@ -1,13 +1,13 @@
 export interface SubjectCreate {
     name: string;
-    icon: File;
+    icon: string;
     color: string;
     slug: string;
 }
 
 export interface SubjectUpdate {
     name?: string;
-    icon?: File;
+    icon?: string;
     color?: string;
     slug?: string;
 }

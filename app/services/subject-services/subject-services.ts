@@ -29,7 +29,7 @@ export const SUBJECT_SERVICES = {
     },
     updateSubject: async (id: string, data: SubjectUpdate) => {
         const form = new FormData();
-        form.append("file", data?.icon as File);
+        form.append("file", data?.icon as string);
         form.append("name", data?.name as string);
         form.append("color", data?.color as string);
         form.append("slug", data?.slug as string);
