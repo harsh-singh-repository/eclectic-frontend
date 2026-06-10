@@ -30,6 +30,9 @@ import { Content, ContentType } from "@/app/types/content/content-types";
 import { useCreateContent, useUpdateContent } from "@/app/hooks/content-hooks/content-hook";
 import { VideoUploadField, UploadedVideo } from "@/components/content/video-upload-field";
 import { VideoPlayer } from "./VideoPlayer";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
+import { handleAxiosError } from "@/lib/utils";
 
 // ─── Zod schema ─────────────────────────────────────────────────────
 const formSchema = z.object({
@@ -50,6 +53,7 @@ interface ContentFormProps {
   forcedType?: ContentType;
   editingContent?: Content;
   onSuccess?: () => void;
+  refetch: () => void;
 }
 
 export function ContentForm({
@@ -58,21 +62,16 @@ export function ContentForm({
   forcedType,
   editingContent,
   onSuccess,
+  refetch,
 }: ContentFormProps) {
   const createContent = useCreateContent();
   const updateContent = useUpdateContent();
   const isEditing = !!editingContent;
   const isPending = createContent.isPending || updateContent.isPending;
 
-  console.log("Editing content:", editingContent);
+  // const [watchedType, setWatchedType] = useState(editingContent?.type);
+  // const [watchedPricingType, setWatchedPricingType] = useState(editingContent?.pricing?.type);
 
-  const [watchedType, setWatchedType] = useState(editingContent?.type);
-  const [watchedPricingType, setWatchedPricingType] = useState(editingContent?.pricing?.type);
-
-
-
-  // Uploaded video state — lives outside react-hook-form
-  // because it's set async after the Cloudinary upload completes
   const [uploadedVideo, setUploadedVideo] = useState<UploadedVideo | null>(
     editingContent?.videoId
       ? {
@@ -96,14 +95,14 @@ export function ContentForm({
     },
   });
 
-  useEffect(() => {
-    if (editingContent) {
-      setWatchedType(editingContent.type);
-      form.setValue("type", editingContent.type);
-      setWatchedPricingType(editingContent.pricing?.type);
-      form.setValue("pricingType", editingContent.pricing?.type);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (editingContent) {
+  //     setWatchedType(editingContent.type);
+  //     form.setValue("type", editingContent.type);
+  //     setWatchedPricingType(editingContent.pricing?.type);
+  //     form.setValue("pricingType", editingContent.pricing?.type);
+  //   }
+  // }, [editingContent]);
 
   // Populate form when editing
   useEffect(() => {
@@ -119,9 +118,22 @@ export function ContentForm({
     }
   }, [editingContent, form]);
 
+  const watchedPricingType = form.watch("pricingType");
   const watchedTitle = form.watch("title");
-  const showVideoUpload = watchedType === "EXERCISE";
-  const showPricing = watchedType !== "CHAPTER";
+
+  const watchedType = form.watch("type");
+
+  const effectiveType =
+    watchedType || editingContent?.type || forcedType;
+
+  const showVideoUpload = effectiveType === "EXERCISE";
+  const showPricing = effectiveType !== "CHAPTER";
+
+  console.log({
+    editingType: editingContent?.type,
+    watchedType,
+    uploadedVideo,
+  });
 
   function onSubmit(values: FormValues) {
     const payload = {
@@ -146,10 +158,26 @@ export function ContentForm({
     if (isEditing) {
       updateContent.mutate(
         { id: editingContent!._id, data: payload },
-        { onSuccess }
+        {
+          onSuccess: () => {
+            refetch();
+            toast.success(`${values?.type} updated successfully`);
+          },
+          onError: (error) => {
+            handleAxiosError(error, "update");
+          },
+        }
       );
     } else {
-      createContent.mutate(payload as any, { onSuccess });
+      createContent.mutate(payload as any, {
+        onSuccess: () => {
+          refetch();
+          toast.success(`${values?.type} created successfully`);
+        },
+        onError: (error) => {
+          handleAxiosError(error, "update");
+        },
+      });
     }
   }
 
@@ -157,7 +185,7 @@ export function ContentForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 px-2">
 
         {/* Title */}
         <FormField
@@ -185,7 +213,7 @@ export function ContentForm({
                 <Select
                   value={field.value || "" || editingContent?.type}
                   onValueChange={field.onChange}
-                  disabled={!!forcedType}
+                  disabled={!!forcedType || isEditing}
                 >
                   <FormControl>
                     <SelectTrigger>

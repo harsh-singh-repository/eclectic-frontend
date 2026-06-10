@@ -14,21 +14,34 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useDeleteContent } from "@/app/hooks/content-hooks/content-hook";
 import { Content } from "@/app/types/content/content-types";
+import { toast } from "sonner";
 
 interface DeleteContentDialogProps {
   content: Content | null;
   onClose: () => void;
+  refetch: () => void;
 }
 
 export function DeleteContentDialog({
   content,
   onClose,
+  refetch,
 }: DeleteContentDialogProps) {
   const deleteContent = useDeleteContent();
 
   function handleConfirm() {
     if (!content) return;
-    deleteContent.mutate(content._id, { onSuccess: onClose });
+    deleteContent.mutate(content._id, {
+      onSuccess: () => {
+        onClose();
+        refetch();
+        toast.success("Content deleted successfully");
+      },
+      onError: (error: any) => {
+        console.error("Failed to delete content:", error);
+        toast.error(`Failed to delete content: ${error.message}`);
+      },
+    });
   }
 
   return (

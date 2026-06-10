@@ -40,7 +40,7 @@ interface ContentPanelProps {
 }
 
 export function ContentPanel({ courseId }: ContentPanelProps) {
-  const { data, isLoading } = useGetContent(courseId);
+  const { data, isLoading , refetch } = useGetContent(courseId);
 
   const [sheetState, setSheetState] = useState<SheetMode>(null);
   const [deleteTarget, setDeleteTarget] = useState<Content | null>(null);
@@ -83,7 +83,7 @@ export function ContentPanel({ courseId }: ContentPanelProps) {
   return (
     <>
       {/* ── Header bar ── */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-start md:justify-between flex-col md:flex-row gap-2">
         <div>
           <h2 className="text-base font-semibold text-zinc-900">
             Content structure
@@ -123,7 +123,7 @@ export function ContentPanel({ courseId }: ContentPanelProps) {
 
         {/* Tree */}
         <TabsContent value="tree">
-          <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
+          <div className="rounded-xl border border-zinc-200 bg-white p-2 shadow-sm min-w-[300px] max-w-full overflow-x-auto">
             <ContentTree
               data={data || []}
               isLoading={isLoading}
@@ -148,7 +148,7 @@ export function ContentPanel({ courseId }: ContentPanelProps) {
 
       {/* ── Create / Edit sheet ── */}
       <Sheet open={!!sheetState} onOpenChange={(open) => !open && closeSheet()}>
-        <SheetContent className="w-[420px] overflow-y-auto sm:max-w-[420px]">
+        <SheetContent className="w-[80%]" side="right">
           <SheetHeader className="mb-6">
             <SheetTitle className="text-base font-semibold text-zinc-900">
               {sheetTitle}
@@ -164,6 +164,7 @@ export function ContentPanel({ courseId }: ContentPanelProps) {
               parentId={sheetState.parentId}
               forcedType={sheetState.forcedType}
               onSuccess={closeSheet}
+              refetch={refetch}
             />
           )}
 
@@ -172,6 +173,7 @@ export function ContentPanel({ courseId }: ContentPanelProps) {
               courseId={courseId}
               editingContent={sheetState.content}
               onSuccess={closeSheet}
+              refetch={refetch}
             />
           )}
         </SheetContent>
@@ -181,6 +183,7 @@ export function ContentPanel({ courseId }: ContentPanelProps) {
       <DeleteContentDialog
         content={deleteTarget}
         onClose={() => setDeleteTarget(null)}
+        refetch={refetch}
       />
     </>
   );

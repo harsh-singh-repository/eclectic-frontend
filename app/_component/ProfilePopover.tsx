@@ -113,7 +113,9 @@ export default function ProfilePopover() {
                 {/* Logout */}
                 <div className="border-t pt-2">
                     <button
-                        onClick={() => signOut()}
+                        onClick={() => signOut({
+                            callbackUrl: "/",
+                        })}
                         className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-50 text-red-500 transition text-sm"
                     >
                         <LogOut className="w-4 h-4" />

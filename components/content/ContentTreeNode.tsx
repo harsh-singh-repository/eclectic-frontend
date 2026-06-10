@@ -90,12 +90,12 @@ export function ContentTreeNode({
         <Icon className={cn("h-4 w-4 shrink-0", color)} />
 
         {/* Title */}
-        <span className="flex-1 truncate text-sm font-medium text-zinc-800">
+        <div className="flex-1 text-sm font-medium text-zinc-800 whitespace-nowrap">
           {node.title}
-        </span>
+        </div>
 
         {/* Badges */}
-        <div className="flex items-center gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="flex items-center gap-1.5">
           <Badge
             variant="outline"
             className="h-5 border-zinc-200 px-1.5 py-0 text-[10px] font-normal text-zinc-500"
@@ -119,7 +119,7 @@ export function ContentTreeNode({
         {/* Actions dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex h-6 w-6 shrink-0 items-center justify-center rounded opacity-0 transition-opacity hover:bg-zinc-200 group-hover:opacity-100">
+            <button className="flex h-6 w-6 shrink-0 items-center justify-center rounded ">
               <MoreHorizontal className="h-3.5 w-3.5 text-zinc-500" />
             </button>
           </DropdownMenuTrigger>

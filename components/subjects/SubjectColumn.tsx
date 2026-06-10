@@ -8,7 +8,7 @@ import Image from "next/image";
 export type Subject = {
   id: string;
   name: string;
-  icon: File;
+  icon: string;
   color: string;
   slug: string;
 };
@@ -25,12 +25,10 @@ export function getSubjectColumns({ onEdit, onDelete }: ColumnActions): ColumnDe
       header: "Icon",
       size: 60,
       cell: ({ row }) => {
-        const icon = row.original.icon;
-
         return (
           <div className="w-10 h-10 relative">
             <Image
-              src={URL.createObjectURL(icon)}
+              src={row?.original?.icon as string}
               alt="icon"
               fill
               className="object-contain rounded-md"

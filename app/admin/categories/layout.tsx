@@ -8,7 +8,7 @@ export default function AdminLayout({
     children: ReactNode;
 }) {
     return (
-        <main className="p-6">
+        <main className="p-2">
             {children}
         </main>
     );

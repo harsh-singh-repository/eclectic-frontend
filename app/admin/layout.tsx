@@ -21,7 +21,7 @@ export default function AdminLayout({
             <SidebarInset>
                 <Topbar />
 
-                <main className="p-6">
+                <main className="p-2 md:p-4">
                     {children}
                 </main>
             </SidebarInset>
