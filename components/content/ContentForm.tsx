@@ -64,6 +64,13 @@ export function ContentForm({
   const isEditing = !!editingContent;
   const isPending = createContent.isPending || updateContent.isPending;
 
+  console.log("Editing content:", editingContent);
+
+  const [watchedType, setWatchedType] = useState(editingContent?.type);
+  const [watchedPricingType, setWatchedPricingType] = useState(editingContent?.pricing?.type);
+
+
+
   // Uploaded video state — lives outside react-hook-form
   // because it's set async after the Cloudinary upload completes
   const [uploadedVideo, setUploadedVideo] = useState<UploadedVideo | null>(
@@ -89,6 +96,15 @@ export function ContentForm({
     },
   });
 
+  useEffect(() => {
+    if (editingContent) {
+      setWatchedType(editingContent.type);
+      form.setValue("type", editingContent.type);
+      setWatchedPricingType(editingContent.pricing?.type);
+      form.setValue("pricingType", editingContent.pricing?.type);
+    }
+  }, []);
+
   // Populate form when editing
   useEffect(() => {
     if (editingContent) {
@@ -103,8 +119,6 @@ export function ContentForm({
     }
   }, [editingContent, form]);
 
-  const watchedType = form.watch("type");
-  const watchedPricingType = form.watch("pricingType");
   const watchedTitle = form.watch("title");
   const showVideoUpload = watchedType === "EXERCISE";
   const showPricing = watchedType !== "CHAPTER";
@@ -169,8 +183,8 @@ export function ContentForm({
               <FormItem>
                 <FormLabel>Type</FormLabel>
                 <Select
+                  value={field.value || "" || editingContent?.type}
                   onValueChange={field.onChange}
-                  value={field.value}
                   disabled={!!forcedType}
                 >
                   <FormControl>
@@ -230,7 +244,7 @@ export function ContentForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Pricing type</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value || "" || editingContent?.pricing?.type}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue />
@@ -257,7 +271,7 @@ export function ContentForm({
                         <Input
                           type="number"
                           min={0}
-                          value={field.value ?? ""}
+                          value={field.value || "" || editingContent?.pricing?.price}
                           onChange={(e) =>
                             field.onChange(
                               e.target.value === "" ? undefined : Number(e.target.value)

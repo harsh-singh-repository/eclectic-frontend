@@ -17,6 +17,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Select, SelectContent, SelectItem,
   SelectTrigger, SelectValue,
 } from "@/components/ui/select";
@@ -31,6 +37,8 @@ import Image from "next/image";
 import { useGetSubjects } from "@/app/hooks/subject-hooks/SubjectHooks";
 import { useGetCategories } from "@/app/hooks/category-hooks/category-hooks";
 import { Checkbox } from "../ui/checkbox";
+import { ScrollArea } from "../ui/scroll-area";
+
 
 const schema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -62,6 +70,8 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
 
   const [thumbnailFile, setThumbnailFile] = useState<File | undefined>(undefined);
   const [preview, setPreview] = useState<string | null>(null);
+
+  const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
 
   // ── Category multi-select state ──────────────────────────────────────────
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
@@ -264,82 +274,26 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
               </FormLabel>
 
               {/* Popover trigger */}
-              <Popover open={catPopoverOpen} onOpenChange={setCatPopoverOpen}>
-                <PopoverTrigger asChild>
-                  <button
-                    type="button"
-                    className="flex w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-zinc-500 hover:bg-zinc-50 transition focus:outline-none focus:ring-1 focus:ring-zinc-300"
-                  >
-                    <span>
-                      {selectedCategoryIds.length === 0
-                        ? "Select categories…"
-                        : `${selectedCategoryIds.length} selected`}
-                    </span>
-                    <ChevronDown className="h-4 w-4 text-zinc-400" />
-                  </button>
-                </PopoverTrigger>
-
-                <PopoverContent
-                  className="w-[var(--radix-popover-trigger-width)] p-2 max-h-52 overflow-y-auto"
-                  align="start"
-                  sideOffset={4}
-                >
-                  {!categories || categories.length === 0 ? (
-                    <p className="py-4 text-center text-xs text-zinc-400">
-                      No categories found.
-                    </p>
-                  ) : (
-                    <div className="space-y-1">
-                      {categories.map((cat: {
-                        _id: string;
-                        name: string;
-                        type: string;
-                      }) => {
-                        const checked = selectedCategoryIds.includes(cat._id);
-                        return (
-                          <label
-                            key={cat._id}
-                            className="flex items-center gap-2.5 rounded-md px-2 py-1.5 hover:bg-zinc-50 cursor-pointer"
-                          >
-                            <Checkbox
-                              checked={checked}
-                              onCheckedChange={() => toggleCategory(cat._id)}
-                              className="h-3.5 w-3.5"
-                            />
-                            <span className="text-sm text-zinc-700">{cat.name}</span>
-                            {/* Type badge */}
-                            <span className="ml-auto text-[10px] font-medium text-zinc-400">
-                              {cat.type}
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  )}
-                </PopoverContent>
-              </Popover>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full justify-between"
+                onClick={() => setCategoryDialogOpen(true)}
+              >
+                {selectedCategoryIds.length === 0
+                  ? "Select categories"
+                  : `${selectedCategoryIds.length} categories selected`}
+                <ChevronDown className="h-4 w-4" />
+              </Button>
 
               {/* Selected pills */}
-              {selectedCategoryIds.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {selectedCategoryIds.map((id) => (
-                    <Badge
-                      key={id}
-                      variant="secondary"
-                      className="flex items-center gap-1 text-xs bg-zinc-100 text-zinc-700 hover:bg-zinc-200 pr-1"
-                    >
-                      {getCategoryName(id)}
-                      <button
-                        type="button"
-                        onClick={() => removeCategory(id)}
-                        className="ml-0.5 rounded-full hover:bg-zinc-300 p-0.5 transition"
-                      >
-                        <X className="h-2.5 w-2.5" />
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-              )}
+              <div className="flex flex-wrap gap-2 mt-2">
+                {selectedCategoryIds.map((id) => (
+                  <Badge key={id} variant="secondary">
+                    {getCategoryName(id)}
+                  </Badge>
+                ))}
+              </div>
             </div>
             {/* ─────────────────────────────────────────────────────────────── */}
 
@@ -424,6 +378,49 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
             </div>
           </form>
         </Form>
+
+        <Dialog
+          open={categoryDialogOpen}
+          onOpenChange={setCategoryDialogOpen}
+        >
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Select Categories</DialogTitle>
+            </DialogHeader>
+
+            <div className="max-h-[400px] overflow-y-auto space-y-2">
+              {categories?.map((cat) => {
+                const checked = selectedCategoryIds.includes(cat._id);
+
+                return (
+                  <label
+                    key={cat._id}
+                    className="flex items-center gap-3 rounded-lg border p-3 cursor-pointer hover:bg-muted"
+                  >
+                    <Checkbox
+                      checked={checked}
+                      onCheckedChange={() => toggleCategory(cat._id)}
+                    />
+
+                    <div className="flex-1">
+                      <p className="font-medium">{cat.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {cat.type}
+                      </p>
+                    </div>
+                  </label>
+                );
+              })}
+            </div>
+
+            <Button
+              onClick={() => setCategoryDialogOpen(false)}
+              className="w-full"
+            >
+              Done
+            </Button>
+          </DialogContent>
+        </Dialog>
       </SheetContent>
     </Sheet>
   );

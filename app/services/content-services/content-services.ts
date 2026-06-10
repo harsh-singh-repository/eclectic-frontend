@@ -1,4 +1,7 @@
-import { ContentCreate, ContentUpdate } from "@/app/types/content/content-types";
+import {
+  ContentCreate,
+  ContentUpdate,
+} from "@/app/types/content/content-types";
 import axiosInstance from "@/lib/axiosInstance";
 
 const CONTENT_APIS = {
@@ -6,15 +9,17 @@ const CONTENT_APIS = {
   CREATE_CONTENT: "/content",
   UPDATE_CONTENT: (id: string) => `/content/${id}`,
   DELETE_CONTENT: (id: string) => `/content/${id}`,
-  GET_CONTENT_BY_CATEGORY: (categoryId: string) => `/content/category/${categoryId}`,
-  GET_CONTENT_BY_SUBJECT: (subjectId: string) => `/content/subject/${subjectId}`,
+  GET_CONTENT_BY_CATEGORY: (categoryId: string) =>
+    `/content/category/${categoryId}`,
+  GET_CONTENT_BY_SUBJECT: (subjectId: string) =>
+    `/content/subject/${subjectId}`,
 };
 
 export const CONTENT_SERVICES = {
   // ✅ GET CONTENT TREE
   getContent: async (courseId: string) => {
     const response = await axiosInstance.get(
-      CONTENT_APIS.GET_CONTENT(courseId)
+      CONTENT_APIS.GET_CONTENT(courseId),
     );
     console.log("Response from getContent", response.data);
     return response.data.data;
@@ -22,7 +27,6 @@ export const CONTENT_SERVICES = {
 
   // ✅ CREATE CONTENT
   createContent: async (data: ContentCreate) => {
-    
     const response = await axiosInstance.post(
       CONTENT_APIS.CREATE_CONTENT,
       data,
@@ -39,8 +43,8 @@ export const CONTENT_SERVICES = {
     if (data.type) form.append("type", data.type);
     if (data.courseId) form.append("courseId", data.courseId);
 
-    if (data.parentId !== undefined) {
-      form.append("parentId", data.parentId || "");
+    if (data.parentId) {
+      form.append("parentId", data.parentId);
     }
 
     if (data.order !== undefined) {
@@ -70,7 +74,7 @@ export const CONTENT_SERVICES = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
 
     return response.data;
@@ -79,7 +83,7 @@ export const CONTENT_SERVICES = {
   // ✅ DELETE CONTENT
   deleteContent: async (id: string) => {
     const response = await axiosInstance.delete(
-      CONTENT_APIS.DELETE_CONTENT(id)
+      CONTENT_APIS.DELETE_CONTENT(id),
     );
     return response.data;
   },
@@ -106,7 +110,7 @@ export const CONTENT_SERVICES = {
   // ✅ GET CONTENT BY CATEGORY
   getContentByCategory: async (categoryId: string) => {
     const response = await axiosInstance.get(
-      CONTENT_APIS.GET_CONTENT_BY_CATEGORY(categoryId)
+      CONTENT_APIS.GET_CONTENT_BY_CATEGORY(categoryId),
     );
     return response.data.data;
   },
@@ -114,7 +118,7 @@ export const CONTENT_SERVICES = {
   // ✅ GET CONTENT BY SUBJECT
   getContentBySubject: async (subjectId: string) => {
     const response = await axiosInstance.get(
-      CONTENT_APIS.GET_CONTENT_BY_SUBJECT(subjectId)
+      CONTENT_APIS.GET_CONTENT_BY_SUBJECT(subjectId),
     );
     return response.data.data;
   },
