@@ -389,7 +389,11 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
             </DialogHeader>
 
             <div className="max-h-[400px] overflow-y-auto space-y-2">
-              {categories?.map((cat) => {
+              {categories?.map((cat :{
+                _id: string;
+                name: string;
+                type: string;
+              }) => {
                 const checked = selectedCategoryIds.includes(cat._id);
 
                 return (
