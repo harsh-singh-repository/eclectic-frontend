@@ -36,21 +36,11 @@ export const CATEGORY_SERVICES = {
 
   // ✅ UPDATE CATEGORY
   updateCategory: async (id: string, data: CategoryUpdate) => {
-    const form = new FormData();
 
-    if (data.name) form.append("name", data.name);
-    if (data.slug) form.append("slug", data.slug);
-    if (data.type) form.append("type", data.type);
-    if (data.parentId) form.append("parentId", data.parentId);
 
     const response = await axiosInstance.put(
       CATEGORY_APIS.UPDATE_CATEGORY(id),
-      form,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      data,
     );
 
     return response.data;

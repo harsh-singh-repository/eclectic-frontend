@@ -42,7 +42,7 @@ const formSchema = z.object({
     .min(1, "Slug is required")
     .regex(/^[a-z0-9-]+$/, "Slug may only contain lowercase letters, numbers, and dashes"),
   type: z.enum(["CLASS", "BOARD", "TYPE"]),
-  parentId: z.string().optional(),
+  parentId: z.string().nullable().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -80,6 +80,17 @@ export function CategoryFormDialog({
       ...defaultValues,
     },
   });
+
+  console.log("Default values", defaultValues);
+
+  useEffect(() => {
+    if (defaultValues && mode === "edit") {
+      form.setValue("name", defaultValues.name as string);
+      form.setValue("slug", defaultValues.slug as string);
+      form.setValue("type", defaultValues.type as "CLASS" | "BOARD" | "TYPE");
+      form.setValue("parentId", defaultValues.parentId);
+    }
+  }, [defaultValues]);
 
   // Auto-generate slug from name
   const nameValue = form.watch("name");
@@ -209,7 +220,7 @@ export function CategoryFormDialog({
                     <span className="text-stone-400 font-normal">(optional)</span>
                   </FormLabel>
                   <Select
-                    onValueChange={(v) => field.onChange(v === "none" ? undefined : v)}
+                    onValueChange={(v) => field.onChange(v === "none" ? null : v)}
                     value={field.value ?? "none"}
                   >
                     <FormControl>
@@ -219,7 +230,7 @@ export function CategoryFormDialog({
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="none">None</SelectItem>
-                      {categories?.map((cat:{
+                      {categories?.map((cat: {
                         _id: string;
                         name: string;
                       }) => (
@@ -253,8 +264,8 @@ export function CategoryFormDialog({
                     ? "Creating…"
                     : "Saving…"
                   : mode === "create"
-                  ? "Create"
-                  : "Save Changes"}
+                    ? "Create"
+                    : "Save Changes"}
               </Button>
             </DialogFooter>
           </form>
