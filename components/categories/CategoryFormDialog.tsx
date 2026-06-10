@@ -81,8 +81,6 @@ export function CategoryFormDialog({
     },
   });
 
-  console.log("Default values", defaultValues);
-
   useEffect(() => {
     if (defaultValues && mode === "edit") {
       form.setValue("name", defaultValues.name as string);
