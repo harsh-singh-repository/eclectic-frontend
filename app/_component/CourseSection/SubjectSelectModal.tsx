@@ -84,7 +84,7 @@ export default function SubjectSelectModal({
 
           {/* Subject Grid */}
           <div className="grid grid-cols-2 gap-2.5 my-6">
-            {subjects.map((s) => {
+            {subjects?.map((s) => {
               const isSelected = selectedSubject?._id === s._id;
               return (
                 <button

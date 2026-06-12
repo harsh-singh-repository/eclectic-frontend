@@ -64,7 +64,7 @@ export default function CoursesPage() {
             {/* Grid */}
             {courses.length > 0 ? (
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {courses.map((course: any, i: number) => {
+                    {courses?.map((course: any, i: number) => {
                         const isPaid = course.pricing?.type === "PAID";
                         const price = course.pricing?.price;
 
@@ -107,7 +107,7 @@ export default function CoursesPage() {
                                     </p>
 
                                     <div className="space-y-0.5 mt-1">
-                                        {course.features.map((feature: string, index:number) => (
+                                        {course?.features?.map((feature: string, index:number) => (
                                             <div key={index} className="flex items-center gap-2 text-[11px] text-[#FB2C36] ">
                                                 <span>✓</span>
                                                 <p>{feature}</p>

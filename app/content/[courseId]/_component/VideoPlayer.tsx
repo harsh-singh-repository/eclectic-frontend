@@ -3,11 +3,13 @@
 import { BookOpen, FileText, Video, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function VideoPlayer({ exercise, content, courseData }: {
     exercise: any;
     content: any;
     courseData: {
+        _id: string;
         title: string;
         slug: string;
         description: string;
@@ -20,6 +22,7 @@ export default function VideoPlayer({ exercise, content, courseData }: {
         isPublished: boolean;
     }
 }) {
+    const router = useRouter();
     const chapters = content?.length ?? 0;
     const sections = content?.reduce(
         (a: number, ch: any) => a + ch.children.length, 0
@@ -45,12 +48,12 @@ export default function VideoPlayer({ exercise, content, courseData }: {
 
                     <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />
 
-                    <Link
-                        href="/courses"
-                        className="hover:text-[#18A49A] transition-colors font-medium shrink-0"
+                    <button
+                        onClick={() => router.back()}
+                        className="hover:text-[#18A49A] transition-colors font-medium shrink-0 cursor-pointer"
                     >
                         Courses
-                    </Link>
+                    </button>
 
                     <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />
 
