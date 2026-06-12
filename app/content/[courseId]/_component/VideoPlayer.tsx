@@ -83,7 +83,7 @@ export default function VideoPlayer({ exercise, content, courseData }: {
                     {courseData?.description}
                 </p>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 items-center max-w-5xl">
                     <StatCard
                         icon={<BookOpen className="w-5 h-5 text-[#09443E]" />}
                         iconBg="bg-[#09443E]/10"
@@ -177,11 +177,11 @@ function StatCard({
     valueColor: string;
 }) {
     return (
-        <div className="bg-white rounded-2xl shadow-sm p-5 flex items-center gap-4">
+        <div className="bg-white rounded-2xl shadow-sm p-4 flex items-center gap-4">
             <div className={`${iconBg} rounded-xl p-2.5 shrink-0`}>{icon}</div>
             <div>
-                <p className={`text-2xl font-bold ${valueColor}`}>{value}</p>
-                <p className="text-sm text-gray-400">{label}</p>
+                <p className={`text-xl md:text-2xl font-bold ${valueColor}`}>{value}</p>
+                <p className="text-xs md:text-md text-gray-400">{label}</p>
             </div>
         </div>
     );
