@@ -116,15 +116,15 @@ export default function VideoPlayer({ exercise, content, courseData }: {
 
                 {/* ── Exercise section — only when selected ── */}
                 {exercise && (
-                    <div className="mt-4">
-                        <div className="flex items-center gap-4 mb-8">
-                            <h2 className="text-2xl font-bold text-[#1E2A4A] whitespace-nowrap">
+                    <div className="mt-8">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-8">
+                            <h2 className="text-lg sm:text-xl font-bold text-[#1E2A4A] break-words">
                                 {exercise?.title}
                             </h2>
 
-                            <div className="flex-1 h-px bg-gray-300" />
+                            <div className="hidden sm:block flex-1 h-px bg-gray-300" />
 
-                            <span className="text-gray-400 font-semibold whitespace-nowrap">
+                            <span className="text-sm sm:text-base text-gray-400 font-semibold whitespace-nowrap">
                                 {videos} lessons
                             </span>
                         </div>
