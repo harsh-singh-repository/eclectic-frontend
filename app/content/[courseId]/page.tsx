@@ -34,7 +34,7 @@ export default function ContentPage() {
     <div className="h-screen bg-[#eef7f5]">
       {/* Desktop Layout */}
       <div className="hidden lg:flex h-full bg-slate-50">
-        <aside className="w-[350px] shrink-0 border-r bg-white">
+        <aside className="w-[330px] shrink-0 border-r bg-white">
           <ContentSidebar
             content={data}
             selectedExercise={selectedExercise}

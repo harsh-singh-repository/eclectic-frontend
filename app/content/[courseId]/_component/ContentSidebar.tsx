@@ -6,7 +6,7 @@ import ChapterItem from "./ChapterItem";
 export default function ContentSidebar({ content, selectedExercise, onSelectExercise }: any) {
     return (
         <aside className="
-      lg:w-[360px] lg:min-w-[360px] lg:max-w-[360px] w-full
+      lg:w-[330px] lg:min-w-[330px] lg:max-w-[330px] w-full
       h-screen sticky top-0
       border-r border-[#d0e0de]
       bg-[#f8fafa]
