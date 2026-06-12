@@ -33,11 +33,13 @@ import { VideoPlayer } from "./VideoPlayer";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { handleAxiosError } from "@/lib/utils";
+import { Textarea } from "../ui/textarea";
 
 // ─── Zod schema ─────────────────────────────────────────────────────
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
   type: z.enum(["CHAPTER", "SUBCHAPTER", "EXERCISE"]),
+  description: z.string().optional(),
   order: z.number().int().min(0).optional(),
   pricingType: z.enum(["FREE", "PAID"]).optional(),
   price: z.number().min(0).optional(),
@@ -82,16 +84,23 @@ export function ContentForm({
       }
       : null
   );
+  const validTypes = ["CHAPTER", "SUBCHAPTER", "EXERCISE"] as const;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      type: forcedType ?? "CHAPTER",
-      order: 0,
-      pricingType: "FREE",
-      price: 0,
-      isPublished: false,
+      title: editingContent?.title ?? "",
+      type: (validTypes.includes(editingContent?.type as any)
+        ? editingContent?.type
+        : forcedType ?? "CHAPTER") as FormValues["type"],
+      order: editingContent?.order ?? 0,
+      pricingType:
+        editingContent?.pricing?.type === "FREE" || editingContent?.pricing?.type === "PAID"
+          ? editingContent.pricing.type
+          : "FREE",
+      price: editingContent?.pricing?.price ?? 0,
+      isPublished: editingContent?.isPublished ?? false,
+      description: editingContent?.description ?? "",
     },
   });
 
@@ -105,18 +114,25 @@ export function ContentForm({
   // }, [editingContent]);
 
   // Populate form when editing
+
+
   useEffect(() => {
-    if (editingContent) {
-      form.reset({
-        title: editingContent.title,
-        type: editingContent.type,
-        order: editingContent.order,
-        pricingType: editingContent.pricing?.type ?? "FREE",
-        price: editingContent.pricing?.price ?? 0,
-        isPublished: editingContent.isPublished,
-      });
-    }
-  }, [editingContent, form]);
+    if (!editingContent) return;
+    form.reset({
+      title: editingContent.title,
+      type: validTypes.includes(editingContent.type as any)
+        ? (editingContent.type as FormValues["type"])
+        : "CHAPTER",
+      order: editingContent.order ?? 0,
+      pricingType:
+        editingContent.pricing?.type === "FREE" || editingContent.pricing?.type === "PAID"
+          ? editingContent.pricing.type
+          : "FREE",
+      price: editingContent.pricing?.price ?? 0,
+      isPublished: editingContent.isPublished ?? false,
+      description: editingContent.description ?? "",
+    });
+  }, [editingContent?._id]);  // ← remove `form` from deps to avoid reset loops
 
   const watchedPricingType = form.watch("pricingType");
   const watchedTitle = form.watch("title");
@@ -132,7 +148,8 @@ export function ContentForm({
   console.log({
     editingType: editingContent?.type,
     watchedType,
-    uploadedVideo,
+    effectiveType,
+    errors: form.formState.errors,
   });
 
   function onSubmit(values: FormValues) {
@@ -142,6 +159,7 @@ export function ContentForm({
       courseId,
       parentId: parentId ?? null,
       order: values.order,
+      description: values.description,
       isPublished: values.isPublished,
       ...(showPricing && {
         pricing: {
@@ -211,7 +229,7 @@ export function ContentForm({
               <FormItem>
                 <FormLabel>Type</FormLabel>
                 <Select
-                  value={field.value || "" || editingContent?.type}
+                  value={field.value}           // ✅ just this
                   onValueChange={field.onChange}
                   disabled={!!forcedType || isEditing}
                 >
@@ -272,7 +290,10 @@ export function ContentForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Pricing type</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value || "" || editingContent?.pricing?.type}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}           // ✅ just this
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue />
@@ -326,6 +347,16 @@ export function ContentForm({
             <p className="text-xs font-medium uppercase tracking-widest text-zinc-400">
               Video
             </p>
+
+            <FormField control={form.control} name="description" render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-medium text-zinc-600">Description</FormLabel>
+                <FormControl>
+                  <Textarea rows={3} placeholder="Brief description of this course..." {...field} className="text-sm resize-none" />
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )} />
 
             {/* ── If editing and a video is already linked, show the player ── */}
             {isEditing && editingContent?.videoId && !uploadedVideo?.videoId && (

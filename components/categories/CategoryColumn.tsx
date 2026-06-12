@@ -37,7 +37,7 @@ export function getCategoryColumns({
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => (
-        <span className="font-medium text-stone-800 text-sm">
+        <span className="font-medium text-stone-800 text-sm whitespace-nowrap">
           {row.original.name}
         </span>
       ),
@@ -46,7 +46,7 @@ export function getCategoryColumns({
       accessorKey: "slug",
       header: "Slug",
       cell: ({ row }) => (
-        <span className="font-mono text-xs text-stone-500 bg-stone-100 px-2 py-0.5 rounded">
+        <span className="font-mono text-xs text-stone-500 bg-stone-100 px-2 py-0.5 rounded whitespace-nowrap">
           {row.original.slug}
         </span>
       ),
@@ -68,7 +68,7 @@ export function getCategoryColumns({
       header: "Parent",
       cell: ({ row }) =>
         row.original.parentId ? (
-          <span className="text-sm text-stone-500">{row.original.parentId?.name}</span>
+          <span className="text-sm text-stone-500 whitespace-nowrap">{row.original.parentId?.name}</span>
         ) : (
           <span className="text-xs text-stone-300">—</span>
         ),

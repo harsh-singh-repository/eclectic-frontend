@@ -13,6 +13,7 @@ export interface CourseCreate {
     discountPrice?: number;
   };
   isPublished?: boolean;
+  features?: string[];
 }
 
 export type CourseUpdate = Partial<CourseCreate>;
@@ -30,6 +31,7 @@ export interface Course {
     _id: string;
     name: string;
   }[];
+  features: string[];
   pricing: {
     type: PricingType;
     price?: number;

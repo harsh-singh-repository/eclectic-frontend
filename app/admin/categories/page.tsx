@@ -14,7 +14,7 @@ export default function CategoriesPage() {
         <span className="text-xs font-medium text-stone-600">Categories</span>
       </nav>
 
-      <div className="max-w-8xl mx-auto px-2 py-10 space-y-8">
+      <div className="max-w-8xl mx-auto px-0 py-10 space-y-8">
         <CategoryPageHeader />
         <CategoryTableSection />
       </div>

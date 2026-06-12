@@ -67,6 +67,10 @@ export const CONTENT_SERVICES = {
       form.append("isPublished", String(data.isPublished));
     }
 
+    if (data.description) {
+      form.append("description", data.description);
+    }
+
     const response = await axiosInstance.put(
       CONTENT_APIS.UPDATE_CONTENT(id),
       form,

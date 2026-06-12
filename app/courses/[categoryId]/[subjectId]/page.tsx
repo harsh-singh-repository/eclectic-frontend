@@ -106,6 +106,15 @@ export default function CoursesPage() {
                                         {course.description}
                                     </p>
 
+                                    <div className="space-y-0.5 mt-1">
+                                        {course.features.map((feature: string, index:number) => (
+                                            <div key={index} className="flex items-center gap-2 text-[11px] text-[#FB2C36] ">
+                                                <span>✓</span>
+                                                <p>{feature}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+
                                     {/* Meta row */}
                                     <div className="flex items-center gap-3 mt-2.5 pt-2.5 border-t border-[#e0eeec]">
                                         <span className="flex items-center gap-1 text-[10px] text-[#6aaba5] font-mono">

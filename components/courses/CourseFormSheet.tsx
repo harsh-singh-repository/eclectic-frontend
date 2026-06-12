@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
+import { useFieldArray } from "react-hook-form";
 import {
   Popover, PopoverContent, PopoverTrigger,
 } from "@/components/ui/popover";
@@ -49,6 +50,7 @@ const schema = z.object({
   thumbnail: z.any().optional(),
   price: z.number().optional(),
   isPublished: z.boolean(),
+  features: z.array(z.string()).default([]).optional(),
   // categories is managed separately as local state (array of IDs)
 });
 
@@ -108,7 +110,13 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
       pricingType: "FREE",
       price: undefined,
       isPublished: false,
+      features: [],
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "features",
   });
 
   useEffect(() => {
@@ -121,6 +129,7 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
         pricingType: course.pricing.type,
         price: course.pricing.price,
         isPublished: course.isPublished,
+        features: course?.features || [],
       });
       setSelectedCategoryIds(course.categories.map((c) => c._id));
       if (course.thumbnail) setPreview(course.thumbnail);
@@ -147,11 +156,19 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
       slug: values.slug,
       description: values.description,
       subjectId: values.subjectId,
-      categories: selectedCategoryIds,          // ← array of category IDs
-      ...(thumbnailFile instanceof File && { thumbnail: thumbnailFile }),
+      categories: selectedCategoryIds,
+      features: values?.features?.filter(
+        (feature) => feature.trim() !== ""
+      ),
+      ...(thumbnailFile instanceof File && {
+        thumbnail: thumbnailFile,
+      }),
       pricing: {
         type: values.pricingType as PricingType,
-        price: values.pricingType !== "FREE" ? values.price : undefined,
+        price:
+          values.pricingType !== "FREE"
+            ? values.price
+            : undefined,
       },
       isPublished: values.isPublished,
     };
@@ -244,6 +261,62 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
                 <FormMessage className="text-xs" />
               </FormItem>
             )} />
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <FormLabel className="text-xs font-medium text-zinc-600">
+                  Course Features
+                </FormLabel>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => append("")}
+                >
+                  Add Feature
+                </Button>
+              </div>
+
+              {fields.map((field, index) => (
+                <div key={field.id} className="flex gap-2">
+                  <FormField
+                    control={form.control}
+                    name={`features.${index}`}
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <Input
+                            placeholder="e.g. Lifetime access"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => remove(index)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+
+              {fields.length === 0 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => append("")}
+                >
+                  Add First Feature
+                </Button>
+              )}
+            </div>
 
             {/* ── Subject ── */}
             <FormField control={form.control} name="subjectId" render={({ field }) => (
@@ -389,7 +462,7 @@ export function CourseFormSheet({ open, onOpenChange, course }: CourseFormSheetP
             </DialogHeader>
 
             <div className="max-h-[400px] overflow-y-auto space-y-2">
-              {categories?.map((cat :{
+              {categories?.map((cat: {
                 _id: string;
                 name: string;
                 type: string;

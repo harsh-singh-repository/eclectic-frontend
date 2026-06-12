@@ -4,7 +4,8 @@ import axiosInstance from "@/lib/axiosInstance";
 const COURSE_APIS = {
   GET_COURSES: "/course",
   CREATE_COURSE: "/course",
-  GET_COURSE_BY_CATEGORY:(categoryId: string , subjectId?: string) => `/course/category?categoryId=${categoryId}${subjectId ? `&subjectId=${subjectId}` : ""}`,
+  GET_COURSE_BY_CATEGORY: (categoryId: string, subjectId?: string) =>
+    `/course/category?categoryId=${categoryId}${subjectId ? `&subjectId=${subjectId}` : ""}`,
   UPDATE_COURSE: (id: string) => `/course/${id}`,
   DELETE_COURSE: (id: string) => `/course/${id}`,
   GET_COURSE_BY_ID: (id: string) => `/course/${id}`,
@@ -49,6 +50,12 @@ export const COURSE_SERVICES = {
       form.append("isPublished", String(data.isPublished));
     }
 
+    if (data.features) {
+      data.features.forEach((feature) => {
+        form.append("features", feature);
+      });
+    }
+
     const response = await axiosInstance.post(COURSE_APIS.CREATE_COURSE, form, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -74,6 +81,12 @@ export const COURSE_SERVICES = {
     if (data.categories) {
       data.categories.forEach((cat) => {
         form.append("categories", cat);
+      });
+    }
+
+    if (data.features) {
+      data.features.forEach((feature) => {
+        form.append("features", feature.trim());
       });
     }
 
@@ -111,7 +124,7 @@ export const COURSE_SERVICES = {
   },
   getCourseByCategoryId: async (categoryId: string, subjectId?: string) => {
     const response = await axiosInstance.get(
-      COURSE_APIS.GET_COURSE_BY_CATEGORY(categoryId, subjectId)
+      COURSE_APIS.GET_COURSE_BY_CATEGORY(categoryId, subjectId),
     );
     return response.data;
   },

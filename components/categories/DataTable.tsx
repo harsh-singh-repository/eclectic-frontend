@@ -60,7 +60,7 @@ export function DataTable<TData>({
       )}
 
       {/* Table */}
-      <div className="rounded-lg border border-stone-200 overflow-hidden bg-white">
+      <div className="rounded-lg border border-stone-200 overflow-x-auto bg-white">
         <table className="w-full text-sm">
           <thead>
             {table.getHeaderGroups().map((hg) => (

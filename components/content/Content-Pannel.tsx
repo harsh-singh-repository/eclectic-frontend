@@ -148,7 +148,7 @@ export function ContentPanel({ courseId }: ContentPanelProps) {
 
       {/* ── Create / Edit sheet ── */}
       <Sheet open={!!sheetState} onOpenChange={(open) => !open && closeSheet()}>
-        <SheetContent className="w-[80%]" side="right">
+        <SheetContent className="w-[80%] overflow-y-auto h-full no-scrollbar" side="right">
           <SheetHeader className="mb-6">
             <SheetTitle className="text-base font-semibold text-zinc-900">
               {sheetTitle}

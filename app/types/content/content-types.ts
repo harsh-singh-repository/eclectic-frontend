@@ -1,7 +1,4 @@
-export type ContentType =
-  | "CHAPTER"
-  | "SUBCHAPTER"
-  | "EXERCISE";
+export type ContentType = "CHAPTER" | "SUBCHAPTER" | "EXERCISE";
 
 export type PricingType = "FREE" | "PAID";
 
@@ -12,7 +9,7 @@ export interface ContentCreate {
   parentId?: string | null;
 
   order?: number;
-
+  description?: string;
   pricing?: {
     type: PricingType;
     price?: number;
@@ -33,12 +30,12 @@ export interface Content {
   courseId: string;
   parentId: string | null;
   order: number;
-  
+
   pricing?: {
     type: PricingType;
     price?: number;
   };
-
+  description?: string;
   videoId?: string;
   duration?: number;
   isPublished: boolean;
