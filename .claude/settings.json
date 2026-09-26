@@ -1,0 +1,13 @@
+{
+    "env": {
+        "ANTHROPIC_API_KEY": "fe_oa_61770819485bc5d7dc901d333fe0a6c9c60375467214f1b9",
+        "ANTHROPIC_BASE_URL": "https://cc.freemodel.dev",
+        "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+    },
+    "model": "claude-sonnet-5",
+    "permissions": {
+        "allow": [],
+        "deny": []
+    },
+    "apiKeyHelper": "echo fe_oa_61770819485bc5d7dc901d333fe0a6c9c60375467214f1b9"
+}

@@ -132,39 +132,7 @@ export function StudentDetails() {
       </div>
 
       {/* ── Stat cards ── */}
-      <div className="grid grid-cols-4 gap-3.5">
-        {statCards.map((card) => (
-          <div
-            key={card.label}
-            className={`
-              flex items-center gap-3.5 p-4 rounded-xl
-              bg-white border border-gray-100
-              shadow-sm hover:shadow-md hover:-translate-y-0.5
-              transition-all duration-200 cursor-default
-              ${card.cardHover}
-            `}
-          >
-            {/* Icon */}
-            <div
-              className={`w-11 h-11 rounded-full ${card.iconBg} flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-110`}
-            >
-              <card.icon
-                size={20}
-                className={card.iconColor}
-                strokeWidth={1.8}
-              />
-            </div>
-
-            {/* Text */}
-            <div>
-              <p className="text-[17px] font-semibold text-gray-900 leading-tight">
-                {card.value.toLocaleString()}
-              </p>
-              <p className="text-[11px] text-gray-500 mt-0.5">{card.label}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+      
     </div>
   );
 }

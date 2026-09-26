@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { AnalyticsHeader, MonthNav } from "./analytics/_component/AnalyticsHeader";
-import { RatingCalendar } from "./analytics/_component/RatingCalender";
-import { WeekDetailsPanel } from "./analytics/_component/WeekDetailsPannel";
-import { AcademicPerformanceOverview } from "./analytics/_component/AcademicPerformanceOverview";
-import { SubjectPerformance } from "./analytics/_component/SubjectPerformance";
-import { PerformanceTrendChart } from "./analytics/_component/PerformanceTrendsChart";
-import { SubjectHighlights } from "./analytics/_component/SubjectHighlight";
-import { defaultWeekId } from "./analytics/_component/analyticsData";
+import { AnalyticsHeader, MonthNav } from "./_component/AnalyticsHeader";
+import { AcademicPerformanceOverview } from "./_component/AcademicPerformanceOverview";
+import { SubjectPerformance } from "./_component/SubjectPerformance";
+import { defaultWeekId } from "./_component/analyticsData";
+import { RatingCalendar } from "./_component/RatingCalender";
+import { WeekDetailsPanel } from "./_component/WeekDetailsPannel";
+import { PerformanceTrendChart } from "./_component/PerformanceTrendsChart";
+import { SubjectHighlights } from "./_component/SubjectHighlight";
 
 const WEEK_ORDER = ["w0", "w1", "w2", "w3", "w4"];
 
@@ -27,6 +27,8 @@ const AnalyticsPage = () => {
 
   return (
     <div className="flex bg-gray-50 min-h-screen">
+
+
       <main className="flex-1 p-6 flex flex-col gap-5">
         <div>
           <AnalyticsHeader />
