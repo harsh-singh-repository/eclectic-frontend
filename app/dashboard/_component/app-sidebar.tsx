@@ -33,7 +33,7 @@ const TEAL = "#0EA5A0";
 
 const mainItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Analytics", url: "/analytics", icon: BarChart2, hasDropdown: true },
+  { title: "Analytics", url: "/dashboard/analytics", icon: BarChart2, hasDropdown: true },
   { title: "Courses", url: "/courses", icon: ListVideo },
   { title: "Batches", url: "/batches", icon: BookOpen },
   { title: "Resources", url: "/resources", icon: File },
