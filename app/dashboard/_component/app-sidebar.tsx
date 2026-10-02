@@ -21,6 +21,8 @@ import {
   ListVideo,
   File,
   LogOut,
+  Radio,
+  NotebookPen,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -34,7 +36,9 @@ const TEAL = "#0EA5A0";
 const mainItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Analytics", url: "/dashboard/analytics", icon: BarChart2, hasDropdown: true },
+  { title: "Live Sessions", url: "/dashboard/live-sessions", icon: Radio },
   { title: "Courses", url: "/courses", icon: ListVideo },
+  { title: "Assigments", url: "/assigments", icon: NotebookPen },
   { title: "Batches", url: "/batches", icon: BookOpen },
   { title: "Resources", url: "/resources", icon: File },
 ];

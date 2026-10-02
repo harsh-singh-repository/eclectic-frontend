@@ -44,8 +44,8 @@ const items = [
     icon: Book,
   },
   {
-    title: "Users",
-    url: "/admin/users",
+    title: "Students",
+    url: "/admin/students",
     icon: Users,
   },
   {
